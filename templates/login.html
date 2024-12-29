@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> Login </title>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+
+    <body>
+        <div class="App">
+            <img id="logo" src="{{ url_for('static', filename='logo.jpg') }}" alt="VocalLytics Logo">
+            <p id="AppName1">Voice</p><p id="AppName2">Lytics</p>
+            <p id="tag">Become a Pro in Communication!</p>
+        </div>
+        </br>
+        <div class="container">
+            <div align="center" class="border">
+                <div class="header">
+                    <h2 class="word">Login</h2>
+                </div>
+                </br></br></br>
+                <h3 class="word">
+                    <form action="{{ url_for('login') }}" method="post">
+                        <div class="msg">{{ msg }}</div>
+
+                        <!-- Username Field -->
+                        <div class="input-group">
+                            <label for="username" class="input-label">Enter Your Username</label>
+                            <input id="username" name="username" type="text" class="textbox"/>
+                        </div>
+                        </br>
+
+                        <!-- Password Field -->
+                        <div class="input-group">
+                            <label for="password" class="input-label">Enter Your Password</label>
+                            <input id="password" name="password" type="password" class="textbox"/>
+                        </div>
+                        </br>
+
+                        <input type="submit" class="btn" value="Sign In"></br></br>
+                    </form>
+                </h3>
+                <p class="bottom">Don't have an account?  <a class="bottom" href="{{url_for('register')}}"> Sign Up here</a></p>
+            </div>
+
+        </div>
+    </body>
+</html>

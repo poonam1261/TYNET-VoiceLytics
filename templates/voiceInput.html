@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Input | Communication Skills</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='voiceinput.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+
+
+    </style>
+</head>
+
+<body>
+    <header class="top-header">
+        <div class="header">
+            <img id="logo" src="{{ url_for('static', filename='logo.jpg') }}" alt="VocalLytics Logo">
+            <p id="AppName1">Voice</p><p id="AppName2">Lytics</p>
+            <div class="nav-links">
+                <h4 id="home">Home</h4>
+                <h4 id="login">LogIN</h4>
+                <h4 id="register">Register</h4>
+                <button id="learnMore">Learn More</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Voice Input Form -->
+        <form method="POST" action="\submit" enctype="multipart/form-data">
+            <img id="mic2" src="{{ url_for('static', filename ='mic2.png') }}">
+           <div class="uploadContainer">
+    <div class="file-upload">
+        <input type="file" name="voice" id="voice" accept="audio/*" style="display: none;">
+        <label for="voice" class="upload-button">
+            <img id="uploadImg" src="{{ url_for('static', filename='uploadImg.png') }}" alt="Upload Icon">
+            Upload Voice
+        </label>
+    </div>
+    <div class="drag-drop-area" id="drag-drop-area">
+        <p>Drag and drop your voice file here, or click to select.</p>
+    </div>
+</div>
+
+<p id="upload-status" style="color: green;"></p>
+            <div id="preview-container"></div>
+
+
+<canvas id="waveform" width="500" height="100" style="border: 1px solid #ccc; margin-top: 20px;"></canvas>
+
+            <p id="OR">OR</p>
+
+            <div class="container2">
+            <div id="recdUpl">
+            <div class="button">
+                <p>Record Voice</p>
+                <a href="javascript:void(0);" onclick="startRecording()">
+                    <img id="startRec" src="/static/startRec.png" alt="Start Recording">
+                </a>
+                <div class="mic">
+                    <p id="record-status"></p>
+                    <img id="mic" src="{{ url_for('static', filename = 'microphone.png')}}">
+                </div>
+                <div id="audio-container"></div>
+
+                </div>
+
+            </div>
+            <button type="button" id="upload-btn">Upload Recording</button>
+
+            </div>
+            <div class="submit-container">
+            <button type="submit" id ="submit-btn">Submit</button>
+                <img id="arrow" src="/static/right-arrow.png">
+                </div>
+        </form>
+
+
+
+    </div>
+
+    <script>
+     const recordBtn = document.getElementById('record-btn');
+const recordStatus = document.getElementById('record-status');
+const uploadBtn = document.getElementById('upload-btn');
+const uploadStatus = document.getElementById('upload-status');
+const fileInput = document.getElementById('voice');
+const submitBtn = document.getElementById('submit-btn');
+const proceed = document.getElementById('proceed');
+const form = document.querySelector('form');
+const mic = document.getElementById('mic');
+const recd = document.getElementById('startRec');
+const waveformCanvas = document.getElementById('waveform');
+const waveformCtx = waveformCanvas.getContext('2d');
+const dragDropArea = document.getElementById('drag-drop-area');
+const previewContainer = document.getElementById('preview-container');
+
+
+let mediaRecorder, audioChunks;
+let audioBlob = null;
+let audioURL;
+
+// Function to draw the waveform
+ // Function to display audio preview
+    function displayAudioPreview(file) {
+        const audioURL = URL.createObjectURL(file);
+        const audioElement = document.createElement('audio');
+        audioElement.controls = true;
+        audioElement.src = audioURL;
+
+        // Clear previous preview and add new audio element
+        previewContainer.innerHTML = '';
+        previewContainer.appendChild(audioElement);
+    }
+
+function drawWaveform(buffer) {
+    const rawData = buffer.getChannelData(0); // Get audio data from the first channel
+    const samples = 500; // Number of samples to display
+    const sliceWidth = waveformCanvas.width / samples; // Width of each slice
+    const step = Math.floor(rawData.length / samples); // Step to sample the audio data
+
+    waveformCtx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height); // Clear previous drawing
+
+    waveformCtx.beginPath();
+    waveformCtx.moveTo(0, waveformCanvas.height / 2);
+
+    for (let i = 0; i < samples; i++) {
+        const sample = rawData[i * step]; // Get a sample
+        const y = (sample * waveformCanvas.height) / 2 + waveformCanvas.height / 2; // Scale sample to canvas height
+        waveformCtx.lineTo(i * sliceWidth, y); // Draw the waveform
+    }
+
+    waveformCtx.strokeStyle = '#00f'; // Set the stroke color (blue)
+    waveformCtx.lineWidth = 2; // Set the line width
+    waveformCtx.stroke(); // Draw the waveform
+}
+
+// Function to generate the waveform for an audio file (from file input or drag-drop)
+function generateWaveform(file) {
+    const reader = new FileReader();
+
+    // When the file is loaded, decode the audio data
+    reader.onload = function (e) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        audioContext.decodeAudioData(e.target.result, function (buffer) {
+            drawWaveform(buffer);
+        });
+    };
+
+    // Read the file as an ArrayBuffer
+    reader.readAsArrayBuffer(file);
+     reader.readAsArrayBuffer(blob);
+}
+
+// When a file is selected (or dropped)
+fileInput.addEventListener('change', function (event) {
+    const file = event.target.files[0];
+
+    if (file) {
+        // Create a new FileReader to read the file
+        const reader = new FileReader();
+
+        // When the file is loaded, decode the audio data
+        reader.onload = function (e) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            audioContext.decodeAudioData(e.target.result, function (buffer) {
+                // Get the audio data and draw the waveform
+                drawWaveform(buffer);
+            });
+        };
+
+        // Read the file as an ArrayBuffer
+        reader.readAsArrayBuffer(file);
+    }
+});
+
+// Drag-and-Drop functionality
+dragDropArea.addEventListener('click', () => {
+    fileInput.click();
+});
+
+dragDropArea.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    dragDropArea.classList.add('drag-over');
+});
+
+dragDropArea.addEventListener('dragleave', () => {
+    dragDropArea.classList.remove('drag-over');
+});
+
+dragDropArea.addEventListener('drop', (event) => {
+    event.preventDefault();
+    dragDropArea.classList.remove('drag-over');
+    const files = event.dataTransfer.files;
+
+    if (files.length > 0) {
+        fileInput.files = files; // Set the dropped file to the input element
+        const fileName = files[0].name; // Get the name of the uploaded file
+        uploadStatus.textContent = `Selected File: ${fileName}`;
+        uploadStatus.style.color = 'green';
+
+        // Call generateWaveform function to draw the waveform
+        waveformCanvas.style.display = 'block';
+        generateWaveform(files[0]);
+        displayAudioPreview(file);
+
+    } else {
+        uploadStatus.textContent = "No file selected.";
+        uploadStatus.style.color = 'red';
+        previewContainer.innerHTML = ''; // Clear the preview
+
+    }
+});
+
+
+ async function startRecording() {
+        if (recd.alt == 'Start Recording') {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+                mediaRecorder.onstop = () => {
+                    audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                     audioURL = URL.createObjectURL(audioBlob);
+                    const audioElement = new Audio(audioURL);
+                    audioElement.controls = true;
+
+                       // Append the audio element to the 'audio-container' div
+                    const audioContainer = document.getElementById('audio-container');
+                    audioContainer.innerHTML = ''; // Clear any previous audio elements
+                    audioContainer.appendChild(audioElement); // Add the new audio element
+
+
+                };
+
+                mediaRecorder.start();
+                recordStatus.textContent = "Recording...";
+                mic.style.display = 'block';
+                recd.src = '/static/stopRec.png'; // Change back to "startRec" icon
+                recd.alt = 'Stop Recording';
+            } catch (err) {
+                recordStatus.textContent = "Error: Microphone access denied.";
+            }
+        } else {
+            mediaRecorder.stop();
+            recordStatus.textContent = "";
+            mic.style.display = 'none';
+            recd.src = '/static/startRec.png'; // Change back to "startRec" icon
+            recd.alt = 'Start Recording';
+        }
+    }
+
+// Handle "Upload Recording" button click
+// Handle "Upload Recording" button click
+uploadBtn.addEventListener('click', () => {
+    if (audioBlob) {
+        // Create a File object for the recorded audio
+        const file = new File([audioBlob], "recording.webm", { type: 'audio/webm' });
+
+        // Hide the file input and update the status
+        fileInput.style.display = 'none';
+        uploadStatus.textContent = `Selected File: ${file.name}`;
+        uploadStatus.style.color = 'green';
+
+        // Store the file in the input element for form submission
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+
+        // Generate waveform for the recorded audio
+        generateWaveform(file); // Pass the File object to the function
+        waveformCanvas.display = 'block';
+        displayAudioPreview(file);
+
+
+    } else {
+        uploadStatus.textContent = "No recording found. Please record your voice first.";
+        uploadStatus.style.color = 'red';
+    }
+});
+
+
+// Form submission validation
+form.addEventListener('submit', (event) => {
+    if (!fileInput.files.length) {
+        event.preventDefault();
+        alert("Please upload a recording or select a file before submitting.");
+    }
+});
+
+// Update upload status when a file is selected
+fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        uploadStatus.textContent = `Selected File : ${fileName}`;
+        uploadStatus.style.color = 'green';
+
+    } else {
+        uploadStatus.textContent = "No file selected.";
+        uploadStatus.style.color = 'red';
+    }
+});
+
+// Add event listener to the submit button
+document.querySelector('#submitBtn').addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    const fileInput = document.querySelector('#file-upload'); // File input element
+    const file = fileInput.files[0]; // Get the selected file
+
+    if (!file) {
+        alert('Please select a file to upload!');
+        return;
+    }
+
+    // Show a loading spinner or disable the button to indicate processing
+    const submitButton = event.target;
+    submitButton.textContent = 'Uploading...';
+    submitButton.disabled = true;
+
+    // Simulate an upload process (or replace with actual API call)
+    setTimeout(() => {
+        alert('File uploaded successfully!');
+        submitButton.textContent = 'Submit';
+        submitButton.disabled = false;
+    }, 2000); // Simulate a 2-second upload
+});
+
+        fileInput.addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        console.log("File selected:", file); // Debugging step
+        generateWaveform(file);
+        displayAudioPreview(file);
+    } else {
+        console.error("No file selected.");
+    }
+});
+
+
+
+    </script>
+</body>
+
+</html>

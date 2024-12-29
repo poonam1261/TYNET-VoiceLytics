@@ -1,0 +1,393 @@
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction : column;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .top-header {
+            position: fixed; /* Sticks the header to the top */
+            top: 0;
+            left: 0;
+            width: 100%; /* Occupies the full width */
+            background-color: #fff; /* Background color of the header */
+            color: white; /* Text color */
+            padding: 10px 20px; /* Adds padding inside the header */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05); /* Optional: Adds a shadow */
+            z-index: 1000; /* Ensures it stays on top of other elements */
+        }
+
+          .container {
+            text-align: left; /* Aligns text to the left */
+            background: none; /* Removes background */
+            padding: 0; /* Removes padding */
+            box-shadow: none; /* Removes box shadow */
+            justify-content : flex-start;
+            padding-left: 100px;
+            display: flex;
+            flex-direction : row;
+             margin-top: 0px;
+        }
+
+         button:hover {
+            background-color: #45a049;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif; /* Apply Poppins font */
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            width: 300px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #logo {
+        height : 100px;
+        width : 100px ;
+        border-radius : 50px;
+        position : relative;
+        left : 0px;
+        padding-left: 40 px;
+
+        }
+
+        #AppName1{
+        padding-left: 40px;
+        color: #00008B;
+        font-size : 36px;
+        font-weight: bold;
+         margin: 0;
+        font-family: 'Roboto', sans-serif; /* Apply Roboto font */
+        }
+
+        #AppName2{
+        padding-left: 40px;
+        color: #87CEEB;
+        font-size : 36px;
+        font-weight: bold;
+         margin: 0;
+          padding: 0;
+          font-family: 'Roboto', sans-serif; /* Apply Roboto font */
+          padding-right : 100px;
+        }
+
+        .header{
+         display: flex; /* Flexbox layout for alignment */
+         flex-direction : row;
+            align-items: center; /* Vertically centers the content */
+            justify-content: flex-start; /* Space between logo and title */
+            padding-top: 10px;
+            padding-bottom : 20px;
+            padding-left : 100px;
+                }
+
+            .nav-links {
+            display: flex;
+            gap: 80px;
+        }
+
+       .nav-links h4 {
+            font-size: 24px;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links h4:hover {
+            color: #4CAF50;
+        }
+
+
+
+         .typing-container h1{
+            font-size: 4.5rem;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            overflow: hidden; /* Hide the text that's not yet typed */
+            border-right: 4px solid black; /* Cursor effect */
+            white-space: nowrap; /* Prevent the text from wrapping */
+            width: 0; /* Initially, no width to hide the text */
+            animation: typing 2s steps(30) 0.2s forwards, blink 1s step-end 3s forwards;
+        }
+
+        /* Typing animation */
+        @keyframes typing {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 1250px; /* Full width when typing is complete */
+            }
+        }
+
+        /* Blinking cursor effect */
+        @keyframes blink {
+            0%, 100% {
+                border-color: black; /* Cursor visible at start and end */
+            }
+            50% {
+                border-color: transparent; /* Hide the cursor halfway through */
+            }
+        }
+
+        .picture img{
+        position : fixed;
+        top:300px;
+        height : 600px;
+        width : 800px;
+        border-radius: 80px;
+        box-shadow: 0 10px 12px rgba(0, 0, 0, 0.3); /* Optional: Adds a shadow */
+           display : block;
+        }
+
+        #learnMore{
+           position : fixed;
+           right : 60px;
+           margin : 0;
+           color : #432fb0;
+           background-color : rgba(0,0,250,0.2);
+           box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15); /* Optional: Adds a shadow */
+
+            }
+
+         #startBtn{
+           color : #fff;
+           background-color : rgba(0,0,250, 0.7);
+           box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15); /* Optional: Adds a shadow */
+           padding-top: 30px;
+           padding-bottom: 30px;
+           font-size: 28px;
+           font-style: italic;
+           padding-left: 50px;
+           padding-right: 50px;
+
+            }
+
+        #description{
+
+            width : 1200px;
+            font-size: 26px;
+            margin-right : 100px;
+        }
+
+        #loudSpeaker{
+            width : 100px;
+            resize: cover;
+
+        }
+
+        #catch-line{
+            font-size: 30px;
+            font-style : italic;
+            font-weight: bold;
+            color : #483D8B;
+        }
+
+        .tag-line{
+            display : flex;
+            flex-direction : row;
+            align-items: center;
+
+        }
+        #bar{
+        background-color : #483D8B;
+        width: 120px;
+        height: 20px;
+        margin-right: 10px;
+        }
+
+.animation-container {
+    position: relative;
+    width: 100%; /* Full width for the animation */
+    height: 300px; /* Height for the animation area */
+    background-color: #f3f3f3; /* Background color */
+    overflow: hidden; /* Ensures ball stays within bounds */
+    gap:20px;
+}
+
+/* Ball Styling */
+.ball1 {
+    position: absolute;
+    margin-bottom : 10px;
+    top: -20px; /* Start from the top */
+    left:0px;
+    width: 57%;
+    height: 30px;
+    translate : translateX(300px) translateY(100px);
+    background-color: #383D8B; /* Ball color */
+    animation: bounce-drop1 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.ball2 {
+    position: absolute;
+    margin-bottom : 20px;
+    top: 20px; /* Start from the top */
+    left:0px;
+    width: 57%;
+    height: 30px;
+    translate : translateX(300px) translateY(100px);
+    background-color: #383D8B; /* Ball color */
+    animation: bounce-drop2 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.ball3 {
+    position: absolute;
+    margin-bottom : 10px;
+    top: 60px; /* Start from the top */
+    left:0px;
+    width: 57%;
+    height: 30px;
+    translate : translateX(300px) translateY(100px);
+    background-color: #383D8B; /* Ball color */
+    animation: bounce-drop3 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+
+/* Bouncing and Dropping Animation */
+@keyframes bounce-drop1 {
+    0% {
+        transform: translateX(-50%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+     10% {
+        transform: translateX(-45%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+     20% {
+        transform: translateX(-40%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    30% {
+        transform: translateX(-35%) translateY(100px); /* Ball hits the floor */
+    }
+     40% {
+        transform: translateX(-30%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    50% {
+        transform: translateX(-25%) translateY(100px); /* Ball bounces high */
+    }
+     60% {
+        transform: translateX(-20%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    70% {
+        transform: translateX(-15%) translateY(100px); /* Ball hits the floor again */
+    }
+    80% {
+        transform: translateX(-10%) translateY(100px); /* Ball bounces lower */
+    }
+     90% {
+        transform: translateX(-5%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    100% {
+        transform: translateX(-0%) translateY(100px); /* Ball rests on the floor */
+    }
+}
+
+@keyframes bounce-drop2 {
+    0% {
+        transform: translateX(-70%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+     10% {
+        transform: translateX(-65%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+     20% {
+        transform: translateX(-60%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    30% {
+        transform: translateX(-55%) translateY(100px); /* Ball hits the floor */
+    }
+     40% {
+        transform: translateX(-50%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    50% {
+        transform: translateX(-45%) translateY(100px); /* Ball bounces high */
+    }
+     60% {
+        transform: translateX(-40%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    70% {
+        transform: translateX(-35%) translateY(100px); /* Ball hits the floor again */
+    }
+    80% {
+        transform: translateX(-30%) translateY(100px); /* Ball bounces lower */
+    }
+     90% {
+        transform: translateX(-25%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    100% {
+        transform: translateX(-20%) translateY(100px); /* Ball rests on the floor */
+    }
+}
+
+
+@keyframes bounce-drop3 {
+    0% {
+        transform: translateX(-90%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+     10% {
+        transform: translateX(-85%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+     20% {
+        transform: translateX(-80%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    30% {
+        transform: translateX(-75%) translateY(100px); /* Ball hits the floor */
+    }
+     40% {
+        transform: translateX(-70%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    50% {
+        transform: translateX(-65%) translateY(100px); /* Ball bounces high */
+    }
+     60% {
+        transform: translateX(-60%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    70% {
+        transform: translateX(-55%) translateY(100px); /* Ball hits the floor again */
+    }
+    80% {
+        transform: translateX(-50%) translateY(100px); /* Ball bounces lower */
+    }
+     90% {
+        transform: translateX(-45%) translateY(100px); /* Ball starts at the bottom of the header */
+    }
+    100% {
+        transform: translateX(-40%) translateY(100px); /* Ball rests on the floor */
+    }
+}
+

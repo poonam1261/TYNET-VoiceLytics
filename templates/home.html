@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Emotion Recognition</title>
+    <style>
+
+
+    </style>
+</head>
+<body>
+    <header class = "top-header">
+    <div class="header">
+            <img id="logo" src="{{ url_for('static', filename='logo.jpg') }}" alt="VocalLytics Logo">
+            <p id="AppName1">Voice</p><p id="AppName2">Lytics</p>
+           <div class="nav-links">
+                <h4 id="home">Home</h4>
+                <h4 id="login">LogIN</h4>
+                <h4 id="register">Register</h4>
+               <button id="learnMore">Learn More</button>
+            </div>
+
+        </div>
+    </header>
+   <div class="animation-container">
+        <div class="ball1"></div>
+       <div class="ball2"></div>
+       <div class="ball3"></div>
+
+    </div>
+    <div class="container">
+        <div>
+        <div class="typing-container">
+            <div class="tag-line">
+                <div id="bar"></div>
+                <p id="catch-line">Unlock your potential</p>
+                </div>
+        <h1>Perfect your communication skills</h1>
+             </br>
+        </div>
+         <p id="description">Step into a world where your voice is more than just words.
+             VocalLytics uses cutting-edge AI to analyze your speech and reveal the emotions
+             behind it. Perfect for anyone looking to enhance their speaking skills, build
+             confidence, or create stronger connections through voice. Start your journey
+             toward impactful communication today!</p>
+        <a href="{{ url_for('login') }}">
+            </br></br></br>
+            <button id="startBtn">Get started for Free</button>
+        </a>
+        </div>
+        <div class="picture">
+            <img src="{{ url_for('static', filename= 'homePage.png') }}">
+        </div>
+    </div>
+
+    <script>
+        // Function to speak the text
+       function speakText(text) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Clear any ongoing speech
+        const speech = new SpeechSynthesisUtterance(text);
+        speech.lang = 'en-US';
+        speech.pitch = 1;
+        speech.rate = 1;
+        window.speechSynthesis.speak(speech);
+    } else {
+        console.log("Speech synthesis not supported in this browser.");
+    }
+}
+
+
+        // Trigger the voice after a short delay
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                speakText("Welcome to VoiceLytics");
+            }, 1000); // Matches typing animation delay
+        });
+    </script>
+
+</body>
+</html>

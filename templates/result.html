@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication Skills Dashboard</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Page-wide Style */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #e3f2fd, #ffffff);
+            color: #333;
+        }
+
+        /* Header Section */
+        header {
+            background-color: #1976d2;
+            color: #fff;
+            padding: 15px 30px;
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        /* Dashboard Container */
+        .container {
+            padding: 20px 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        /* Section Styling */
+        .section {
+            margin: 20px 0;
+        }
+
+        /* Section Title */
+        .section h2 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #555;
+        }
+
+        /* Button Section */
+        .btn-container {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .btn-container button {
+            background-color: #1976d2;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-container button:hover {
+            background-color: #1565c0;
+        }
+
+        #emotion-wheel{
+        width : '50%';
+        height : 200px;
+        }
+
+        /* Graphs Section */
+        #graph-container {
+            width: 100%;
+            height: 400px;
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        /* Feedback Panel */
+        .feedback-section {
+            background-color: #d0e6ff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        /* Responsive Graph Section */
+        @media (max-width: 768px) {
+            .btn-container button {
+                padding: 8px 16px;
+            }
+
+            #graph-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <h1>Communication Skills Dashboard</h1>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <div class="container">
+
+        <div class="section">
+            <h2>Welcome, <span style="color: #1976d2;">{{ session.get('user', 'Guest') }}</span>!</h2>
+            <p>Analyze your voice, emotions, and communication effectiveness here.</p>
+        </div>
+
+
+
+        <!-- Emotion Wheel Section -->
+<div class="section">
+    <h2>Emotion Analysis - Emotion Wheel</h2>
+    <canvas id="emotion-wheel" style="width:50%; height:200px;"></canvas>
+</div>
+
+
+
+       <!-- Graph Results Section -->
+<div class="section">
+    <h2>Results & Insights</h2>
+    <canvas id="graph-container" style="width:100%; height:400px;"></canvas>
+</div>
+
+
+        <!-- Feedback Section -->
+        <div class="section feedback-section">
+            <h3>Actionable Communication Tips</h3>
+            <p>
+                Based on analysis, try focusing on improving your vocal tone, pitch modulation, and emotional
+                expression during conversations. Avoid monotone deliveries for better communication engagement.
+            </p>
+        </div>
+
+        <!-- Report Download Section -->
+        <div class="section btn-container">
+            <h3>Download Your Analysis Report</h3>
+            <button onclick="window.location.href='/download_report'">Download Report</button>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 Communication Skills Analysis Dashboard. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Include JS for Graph rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Example Graph Logic - You'd dynamically populate these graphs later with AJAX or server responses
+        const ctx = document.getElementById('graph-container').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Emotion', 'Pitch', 'Grammar Score', 'Communication Score'],
+                datasets: [{
+                    label: 'Score',
+                    data: [8, 6, 7, 9],
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+<script>
+    async function renderGraph() {
+        try {
+            // Fetch the dynamic data from the backend
+            const response = await fetch('/get-analysis-data');
+            const data = await response.json();
+
+            // Render the graph using Chart.js
+            const ctx = document.getElementById('graph-container').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels, // The labels (e.g., Emotion, Pitch, etc.)
+                    datasets: [{
+                        label: 'Analysis Results',
+                        data: data.values, // The computed scores from your backend
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Communication Skills Analysis'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error rendering graph', error);
+        }
+    }
+
+    // Call the function when the page loads
+    document.addEventListener('DOMContentLoaded', renderGraph);
+</script>
+<script>
+    async function renderEmotionWheel() {
+        try {
+            // Fetch emotion data from the server
+            const response = await fetch('/get-emotion-data');
+            const data = await response.json();
+
+            const ctx = document.getElementById('emotion-wheel').getContext('2d');
+            new Chart(ctx, {
+                type: 'polarArea',
+                data: {
+                    labels: data.labels, // Emotion categories
+                    datasets: [{
+                        label: 'Emotion Intensity',
+                        data: data.values, // Values sent from backend
+                        backgroundColor: [
+                            '#FF0000',
+                            '#0000FF',
+                            '#FFFF00',
+                            '#00FF00',
+                            '#FFC0CB',
+                            '#808080',
+                        ],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Emotion Wheel Analysis'
+                        }
+                    },
+                }
+            });
+        } catch (error) {
+            console.error('Error loading emotion wheel', error);
+        }
+    }
+
+    // Call the function when the page loads
+    document.addEventListener('DOMContentLoaded', renderEmotionWheel);
+</script>
+
+
+</body>
+
+</html>
